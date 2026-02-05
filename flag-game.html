@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>국기 퀴즈 게임</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', '맑은 고딕', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 15px 0 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .score-board span {
+            padding: 8px 20px;
+            border-radius: 30px;
+            color: white;
+        }
+
+        .correct-score {
+            background: #4CAF50;
+        }
+
+        .wrong-score {
+            background: #f44336;
+        }
+
+        .question-count {
+            background: #2196F3;
+        }
+
+        .flag-container {
+            margin: 20px auto;
+            width: 280px;
+            height: 180px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 3px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9f9f9;
+        }
+
+        .flag-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .option-btn {
+            padding: 16px 10px;
+            font-size: 1.15em;
+            font-weight: bold;
+            border: 3px solid #ddd;
+            border-radius: 16px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #333;
+        }
+
+        .option-btn:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+            transform: scale(1.03);
+        }
+
+        .option-btn.correct {
+            background: #4CAF50;
+            border-color: #4CAF50;
+            color: white;
+            animation: pop 0.4s ease;
+        }
+
+        .option-btn.wrong {
+            background: #f44336;
+            border-color: #f44336;
+            color: white;
+            animation: shake 0.4s ease;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+            transform: none;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        .message {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 15px 0;
+            min-height: 45px;
+        }
+
+        .message.correct-msg {
+            color: #4CAF50;
+        }
+
+        .message.wrong-msg {
+            color: #f44336;
+        }
+
+        .next-btn {
+            padding: 14px 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            display: none;
+            margin: 0 auto;
+            transition: transform 0.2s;
+        }
+
+        .next-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* 시작 화면 */
+        .start-screen {
+            padding: 20px;
+        }
+
+        .start-screen h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .start-emoji {
+            font-size: 4em;
+            margin: 20px 0;
+        }
+
+        .start-desc {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .start-btn {
+            padding: 18px 60px;
+            font-size: 1.4em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* 결과 화면 */
+        .result-screen {
+            display: none;
+            padding: 20px;
+        }
+
+        .result-emoji {
+            font-size: 5em;
+            margin: 20px 0;
+        }
+
+        .result-text {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .result-detail {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .restart-btn {
+            padding: 16px 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .hint-text {
+            font-size: 0.95em;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- 시작 화면 -->
+        <div class="start-screen" id="startScreen">
+            <h1>국기 퀴즈</h1>
+            <div class="start-emoji">🌍🏳️‍🌈🌏</div>
+            <p class="start-desc">
+                세계 여러 나라의 국기를 맞춰보세요!<br>
+                총 10문제가 출제됩니다.
+            </p>
+            <button class="start-btn" onclick="startGame()">게임 시작!</button>
+        </div>
+
+        <!-- 게임 화면 -->
+        <div id="gameScreen" style="display:none;">
+            <h1>이 국기는 어느 나라일까요?</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="score-board">
+                <span class="correct-score" id="correctScore">⭕ 0</span>
+                <span class="wrong-score" id="wrongScore">❌ 0</span>
+                <span class="question-count" id="questionCount">1 / 10</span>
+            </div>
+            <div class="flag-container">
+                <img id="flagImage" src="" alt="국기">
+            </div>
+            <div class="hint-text" id="hintText"></div>
+            <div class="message" id="message"></div>
+            <div class="options" id="options"></div>
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">다음 문제 ➜</button>
+        </div>
+
+        <!-- 결과 화면 -->
+        <div class="result-screen" id="resultScreen">
+            <h1>게임 끝!</h1>
+            <div class="result-emoji" id="resultEmoji"></div>
+            <div class="result-text" id="resultText"></div>
+            <div class="result-detail" id="resultDetail"></div>
+            <button class="restart-btn" onclick="startGame()">다시 하기</button>
+        </div>
+    </div>
+
+    <script>
+        const countries = [
+            { code: 'kr', name: '대한민국', hint: '아시아' },
+            { code: 'jp', name: '일본', hint: '아시아' },
+            { code: 'cn', name: '중국', hint: '아시아' },
+            { code: 'us', name: '미국', hint: '북아메리카' },
+            { code: 'gb', name: '영국', hint: '유럽' },
+            { code: 'fr', name: '프랑스', hint: '유럽' },
+            { code: 'de', name: '독일', hint: '유럽' },
+            { code: 'it', name: '이탈리아', hint: '유럽' },
+            { code: 'es', name: '스페인', hint: '유럽' },
+            { code: 'pt', name: '포르투갈', hint: '유럽' },
+            { code: 'nl', name: '네덜란드', hint: '유럽' },
+            { code: 'be', name: '벨기에', hint: '유럽' },
+            { code: 'ch', name: '스위스', hint: '유럽' },
+            { code: 'at', name: '오스트리아', hint: '유럽' },
+            { code: 'se', name: '스웨덴', hint: '유럽' },
+            { code: 'no', name: '노르웨이', hint: '유럽' },
+            { code: 'dk', name: '덴마크', hint: '유럽' },
+            { code: 'fi', name: '핀란드', hint: '유럽' },
+            { code: 'pl', name: '폴란드', hint: '유럽' },
+            { code: 'gr', name: '그리스', hint: '유럽' },
+            { code: 'tr', name: '튀르키예', hint: '아시아/유럽' },
+            { code: 'ru', name: '러시아', hint: '유럽/아시아' },
+            { code: 'ca', name: '캐나다', hint: '북아메리카' },
+            { code: 'mx', name: '멕시코', hint: '북아메리카' },
+            { code: 'br', name: '브라질', hint: '남아메리카' },
+            { code: 'ar', name: '아르헨티나', hint: '남아메리카' },
+            { code: 'au', name: '호주', hint: '오세아니아' },
+            { code: 'nz', name: '뉴질랜드', hint: '오세아니아' },
+            { code: 'in', name: '인도', hint: '아시아' },
+            { code: 'th', name: '태국', hint: '아시아' },
+            { code: 'vn', name: '베트남', hint: '아시아' },
+            { code: 'ph', name: '필리핀', hint: '아시아' },
+            { code: 'my', name: '말레이시아', hint: '아시아' },
+            { code: 'id', name: '인도네시아', hint: '아시아' },
+            { code: 'sg', name: '싱가포르', hint: '아시아' },
+            { code: 'eg', name: '이집트', hint: '아프리카' },
+            { code: 'za', name: '남아프리카공화국', hint: '아프리카' },
+            { code: 'ng', name: '나이지리아', hint: '아프리카' },
+            { code: 'ke', name: '케냐', hint: '아프리카' },
+            { code: 'sa', name: '사우디아라비아', hint: '아시아' },
+            { code: 'ae', name: '아랍에미리트', hint: '아시아' },
+            { code: 'il', name: '이스라엘', hint: '아시아' },
+            { code: 'ua', name: '우크라이나', hint: '유럽' },
+            { code: 'ie', name: '아일랜드', hint: '유럽' },
+            { code: 'cl', name: '칠레', hint: '남아메리카' },
+            { code: 'co', name: '콜롬비아', hint: '남아메리카' },
+            { code: 'pe', name: '페루', hint: '남아메리카' },
+            { code: 'cu', name: '쿠바', hint: '북아메리카' },
+            { code: 'jm', name: '자메이카', hint: '북아메리카' },
+            { code: 'is', name: '아이슬란드', hint: '유럽' },
+            { code: 'hu', name: '헝가리', hint: '유럽' },
+            { code: 'cz', name: '체코', hint: '유럽' },
+            { code: 'ro', name: '루마니아', hint: '유럽' },
+            { code: 'hr', name: '크로아티아', hint: '유럽' },
+            { code: 'mn', name: '몽골', hint: '아시아' },
+            { code: 'np', name: '네팔', hint: '아시아' },
+            { code: 'kh', name: '캄보디아', hint: '아시아' },
+            { code: 'mm', name: '미얀마', hint: '아시아' },
+            { code: 'pk', name: '파키스탄', hint: '아시아' },
+            { code: 'bd', name: '방글라데시', hint: '아시아' },
+        ];
+
+        const TOTAL_QUESTIONS = 10;
+        let currentQuestion = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let selectedCountries = [];
+        let answered = false;
+
+        function shuffle(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function startGame() {
+            currentQuestion = 0;
+            correctCount = 0;
+            wrongCount = 0;
+            selectedCountries = shuffle(countries).slice(0, TOTAL_QUESTIONS);
+
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            answered = false;
+            const country = selectedCountries[currentQuestion];
+
+            // 국기 이미지 로드
+            const flagImg = document.getElementById('flagImage');
+            flagImg.src = `https://flagcdn.com/w640/${country.code}.png`;
+            flagImg.alt = '국기';
+
+            // 힌트
+            document.getElementById('hintText').textContent = `힌트: ${country.hint}`;
+
+            // 보기 만들기 (정답 + 오답 3개)
+            let wrongOptions = countries.filter(c => c.code !== country.code);
+            wrongOptions = shuffle(wrongOptions).slice(0, 3);
+            let options = shuffle([country, ...wrongOptions]);
+
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = opt.name;
+                btn.onclick = () => checkAnswer(btn, opt.code === country.code, country.name);
+                optionsDiv.appendChild(btn);
+            });
+
+            // UI 업데이트
+            document.getElementById('correctScore').textContent = `⭕ ${correctCount}`;
+            document.getElementById('wrongScore').textContent = `❌ ${wrongCount}`;
+            document.getElementById('questionCount').textContent = `${currentQuestion + 1} / ${TOTAL_QUESTIONS}`;
+            document.getElementById('progressFill').style.width = `${((currentQuestion) / TOTAL_QUESTIONS) * 100}%`;
+            document.getElementById('message').textContent = '';
+            document.getElementById('message').className = 'message';
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+
+        function checkAnswer(btn, isCorrect, correctName) {
+            if (answered) return;
+            answered = true;
+
+            // 모든 버튼 비활성화
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(b => {
+                b.disabled = true;
+                if (b.textContent === correctName) {
+                    b.classList.add('correct');
+                }
+            });
+
+            const messageEl = document.getElementById('message');
+
+            if (isCorrect) {
+                correctCount++;
+                messageEl.textContent = '정답이에요! 🎉 잘했어요!';
+                messageEl.className = 'message correct-msg';
+            } else {
+                wrongCount++;
+                btn.classList.add('wrong');
+                messageEl.textContent = `아쉬워요! 정답은 "${correctName}" 이에요`;
+                messageEl.className = 'message wrong-msg';
+            }
+
+            document.getElementById('correctScore').textContent = `⭕ ${correctCount}`;
+            document.getElementById('wrongScore').textContent = `❌ ${wrongCount}`;
+
+            // 다음 버튼 또는 결과 표시
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentQuestion < TOTAL_QUESTIONS - 1) {
+                nextBtn.textContent = '다음 문제 ➜';
+            } else {
+                nextBtn.textContent = '결과 보기 🏆';
+            }
+            nextBtn.style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion >= TOTAL_QUESTIONS) {
+                showResult();
+            } else {
+                showQuestion();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+
+            const percent = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
+            let emoji, text;
+
+            if (percent === 100) {
+                emoji = '🏆👑🎉';
+                text = '완벽해요! 국기 박사!';
+            } else if (percent >= 80) {
+                emoji = '🌟🎉';
+                text = '대단해요! 거의 다 맞았어요!';
+            } else if (percent >= 60) {
+                emoji = '😊👍';
+                text = '잘했어요! 조금만 더 공부해봐요!';
+            } else if (percent >= 40) {
+                emoji = '💪😀';
+                text = '괜찮아요! 다시 도전해봐요!';
+            } else {
+                emoji = '📚🌍';
+                text = '국기를 더 공부해봐요! 화이팅!';
+            }
+
+            document.getElementById('resultEmoji').textContent = emoji;
+            document.getElementById('resultText').textContent = text;
+            document.getElementById('resultDetail').textContent = `${TOTAL_QUESTIONS}문제 중 ${correctCount}개 정답! (${percent}%)`;
+        }
+    </script>
+</body>
+</html>
