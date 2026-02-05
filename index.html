@@ -461,6 +461,25 @@
             margin-top: 5px;
         }
 
+        .home-btn {
+            padding: 8px 18px;
+            font-size: 0.95em;
+            font-weight: bold;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+            color: #666;
+        }
+
+        .home-btn:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+            color: #333;
+        }
+
         .sound-toggle {
             position: fixed;
             top: 15px;
@@ -516,6 +535,7 @@
 
         <!-- 게임 화면 -->
         <div id="gameScreen" style="display:none;">
+            <button class="home-btn" onclick="goHome()">🏠 처음으로</button>
             <h1 id="gameTitle"></h1>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
@@ -560,6 +580,7 @@
 
         <!-- 카드 게임 화면 (모드4) -->
         <div id="cardScreen" style="display:none;">
+            <button class="home-btn" onclick="goHome()">🏠 처음으로</button>
             <h1>건이의 카드 짝 맞추기!</h1>
             <div class="card-stats" id="cardStats">시도: 0번 | 짝 찾기: 0 / 6</div>
             <div class="card-grid" id="cardGrid"></div>
