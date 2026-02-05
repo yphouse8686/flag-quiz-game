@@ -24,14 +24,14 @@
             background: white;
             border-radius: 24px;
             padding: 40px;
-            max-width: 600px;
-            width: 90%;
+            max-width: 650px;
+            width: 93%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             text-align: center;
         }
 
         h1 {
-            font-size: 2em;
+            font-size: 1.9em;
             margin-bottom: 10px;
             color: #333;
         }
@@ -39,29 +39,22 @@
         .score-board {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin: 15px 0 25px;
-            font-size: 1.2em;
+            gap: 20px;
+            margin: 15px 0 20px;
+            font-size: 1.1em;
             font-weight: bold;
+            flex-wrap: wrap;
         }
 
         .score-board span {
-            padding: 8px 20px;
+            padding: 8px 18px;
             border-radius: 30px;
             color: white;
         }
 
-        .correct-score {
-            background: #4CAF50;
-        }
-
-        .wrong-score {
-            background: #f44336;
-        }
-
-        .question-count {
-            background: #2196F3;
-        }
+        .correct-score { background: #4CAF50; }
+        .wrong-score { background: #f44336; }
+        .question-count { background: #2196F3; }
 
         .flag-container {
             margin: 20px auto;
@@ -83,11 +76,12 @@
             object-fit: cover;
         }
 
+        /* 4지선다 텍스트 보기 */
         .options {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin: 25px 0;
+            margin: 20px 0;
         }
 
         .option-btn {
@@ -127,6 +121,184 @@
             transform: none;
         }
 
+        /* 국기 이미지 보기 (모드2용) */
+        .flag-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .flag-option-btn {
+            border: 4px solid #ddd;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f9f9f9;
+            height: 110px;
+        }
+
+        .flag-option-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .flag-option-btn:hover {
+            border-color: #667eea;
+            transform: scale(1.03);
+        }
+
+        .flag-option-btn.correct {
+            border-color: #4CAF50;
+            box-shadow: 0 0 15px rgba(76,175,80,0.5);
+            animation: pop 0.4s ease;
+        }
+
+        .flag-option-btn.wrong {
+            border-color: #f44336;
+            box-shadow: 0 0 15px rgba(244,67,54,0.5);
+            animation: shake 0.4s ease;
+        }
+
+        .flag-option-btn:disabled {
+            cursor: default;
+            transform: none;
+        }
+
+        /* O/X 버튼 (모드3용) */
+        .ox-options {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .ox-btn {
+            width: 120px;
+            height: 120px;
+            font-size: 3.5em;
+            font-weight: bold;
+            border: 4px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ox-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .ox-btn.o-btn:hover { border-color: #4CAF50; background: #e8f5e9; }
+        .ox-btn.x-btn:hover { border-color: #f44336; background: #ffebee; }
+
+        .ox-btn.correct {
+            background: #4CAF50;
+            border-color: #4CAF50;
+            color: white;
+            animation: pop 0.4s ease;
+        }
+
+        .ox-btn.wrong {
+            background: #f44336;
+            border-color: #f44336;
+            color: white;
+            animation: shake 0.4s ease;
+        }
+
+        .ox-question-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin: 15px 0;
+        }
+
+        /* 카드 뒤집기 (모드4용) */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            perspective: 600px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            border-radius: 12px;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card.matched .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #ddd;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 2em;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: white;
+            overflow: hidden;
+        }
+
+        .card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-back .card-text {
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #333;
+            padding: 5px;
+            word-break: keep-all;
+        }
+
+        .card.matched .card-front,
+        .card.matched .card-back {
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76,175,80,0.4);
+        }
+
+        .card-stats {
+            font-size: 1.1em;
+            color: #666;
+            margin: 10px 0;
+        }
+
         @keyframes pop {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -140,19 +312,14 @@
         }
 
         .message {
-            font-size: 1.5em;
+            font-size: 1.4em;
             font-weight: bold;
-            margin: 15px 0;
-            min-height: 45px;
+            margin: 12px 0;
+            min-height: 40px;
         }
 
-        .message.correct-msg {
-            color: #4CAF50;
-        }
-
-        .message.wrong-msg {
-            color: #f44336;
-        }
+        .message.correct-msg { color: #4CAF50; }
+        .message.wrong-msg { color: #f44336; }
 
         .next-btn {
             padding: 14px 50px;
@@ -168,14 +335,10 @@
             transition: transform 0.2s;
         }
 
-        .next-btn:hover {
-            transform: scale(1.05);
-        }
+        .next-btn:hover { transform: scale(1.05); }
 
         /* 시작 화면 */
-        .start-screen {
-            padding: 20px;
-        }
+        .start-screen { padding: 20px; }
 
         .start-screen h1 {
             font-size: 2.5em;
@@ -190,24 +353,52 @@
         .start-desc {
             font-size: 1.2em;
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             line-height: 1.6;
         }
 
-        .start-btn {
-            padding: 18px 60px;
-            font-size: 1.4em;
-            font-weight: bold;
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: transform 0.2s;
+        .mode-select {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
         }
 
-        .start-btn:hover {
-            transform: scale(1.05);
+        .mode-btn {
+            padding: 18px 12px;
+            font-size: 1em;
+            font-weight: bold;
+            border: 3px solid #ddd;
+            border-radius: 16px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #333;
+        }
+
+        .mode-btn:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+            transform: scale(1.03);
+        }
+
+        .mode-btn .mode-emoji {
+            font-size: 2em;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .mode-btn .mode-name {
+            display: block;
+            font-size: 1.1em;
+        }
+
+        .mode-btn .mode-desc {
+            display: block;
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 4px;
+            font-weight: normal;
         }
 
         /* 결과 화면 */
@@ -246,16 +437,14 @@
             transition: transform 0.2s;
         }
 
-        .restart-btn:hover {
-            transform: scale(1.05);
-        }
+        .restart-btn:hover { transform: scale(1.05); }
 
         .progress-bar {
             width: 100%;
             height: 10px;
             background: #eee;
             border-radius: 5px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             overflow: hidden;
         }
 
@@ -271,24 +460,63 @@
             color: #999;
             margin-top: 5px;
         }
+
+        .sound-toggle {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
     </style>
 </head>
 <body>
+    <!-- 효과음 켜기/끄기 버튼 -->
+    <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">🔊</button>
+
     <div class="game-container">
         <!-- 시작 화면 -->
         <div class="start-screen" id="startScreen">
             <h1>건이의 국기 퀴즈</h1>
             <div class="start-emoji">🌍🧑‍🎓🌏</div>
             <p class="start-desc">
-                건강이~ 세계 여러 나라의 국기를 맞춰볼까?<br>
-                총 10문제가 나와! 건이라면 할 수 있어!
+                건강이~ 어떤 게임을 할까?<br>
+                하나 골라봐!
             </p>
-            <button class="start-btn" onclick="startGame()">건이 도전! 💪</button>
+            <div class="mode-select">
+                <button class="mode-btn" onclick="startGame(1)">
+                    <span class="mode-emoji">🏳️</span>
+                    <span class="mode-name">국기 보고 맞추기</span>
+                    <span class="mode-desc">국기를 보고 나라 이름 고르기</span>
+                </button>
+                <button class="mode-btn" onclick="startGame(2)">
+                    <span class="mode-emoji">🔤</span>
+                    <span class="mode-name">이름 보고 맞추기</span>
+                    <span class="mode-desc">나라 이름 보고 국기 고르기</span>
+                </button>
+                <button class="mode-btn" onclick="startGame(3)">
+                    <span class="mode-emoji">⭕❌</span>
+                    <span class="mode-name">O/X 퀴즈</span>
+                    <span class="mode-desc">맞으면 O 틀리면 X</span>
+                </button>
+                <button class="mode-btn" onclick="startGame(4)">
+                    <span class="mode-emoji">🃏</span>
+                    <span class="mode-name">카드 짝 맞추기</span>
+                    <span class="mode-desc">국기와 이름의 짝을 찾기</span>
+                </button>
+            </div>
         </div>
 
         <!-- 게임 화면 -->
         <div id="gameScreen" style="display:none;">
-            <h1>건이~ 이 국기는 어느 나라일까?</h1>
+            <h1 id="gameTitle"></h1>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
@@ -297,13 +525,45 @@
                 <span class="wrong-score" id="wrongScore">❌ 0</span>
                 <span class="question-count" id="questionCount">1 / 10</span>
             </div>
-            <div class="flag-container">
-                <img id="flagImage" src="" alt="국기">
+
+            <!-- 모드1: 국기 이미지 + 텍스트 보기 -->
+            <div id="mode1Area" style="display:none;">
+                <div class="flag-container">
+                    <img id="flagImage" src="" alt="국기">
+                </div>
+                <div class="hint-text" id="hintText"></div>
+                <div class="options" id="options"></div>
             </div>
-            <div class="hint-text" id="hintText"></div>
+
+            <!-- 모드2: 나라 이름 + 국기 이미지 보기 -->
+            <div id="mode2Area" style="display:none;">
+                <div class="ox-question-text" id="countryNameText"></div>
+                <div class="hint-text" id="hintText2"></div>
+                <div class="flag-options" id="flagOptions"></div>
+            </div>
+
+            <!-- 모드3: O/X 퀴즈 -->
+            <div id="mode3Area" style="display:none;">
+                <div class="flag-container">
+                    <img id="oxFlagImage" src="" alt="국기">
+                </div>
+                <div class="ox-question-text" id="oxQuestionText"></div>
+                <div class="ox-options">
+                    <button class="ox-btn o-btn" id="oBtn" onclick="checkOX(true)">⭕</button>
+                    <button class="ox-btn x-btn" id="xBtn" onclick="checkOX(false)">❌</button>
+                </div>
+            </div>
+
             <div class="message" id="message"></div>
-            <div class="options" id="options"></div>
             <button class="next-btn" id="nextBtn" onclick="nextQuestion()">다음 문제 ➜</button>
+        </div>
+
+        <!-- 카드 게임 화면 (모드4) -->
+        <div id="cardScreen" style="display:none;">
+            <h1>건이의 카드 짝 맞추기!</h1>
+            <div class="card-stats" id="cardStats">시도: 0번 | 짝 찾기: 0 / 6</div>
+            <div class="card-grid" id="cardGrid"></div>
+            <div class="message" id="cardMessage"></div>
         </div>
 
         <!-- 결과 화면 -->
@@ -312,11 +572,12 @@
             <div class="result-emoji" id="resultEmoji"></div>
             <div class="result-text" id="resultText"></div>
             <div class="result-detail" id="resultDetail"></div>
-            <button class="restart-btn" onclick="startGame()">건이 다시 도전! 🔥</button>
+            <button class="restart-btn" onclick="goHome()">다른 게임 하기 🏠</button>
         </div>
     </div>
 
     <script>
+        // ===== 나라 목록 =====
         const countries = [
             { code: 'kr', name: '대한민국', hint: '아시아' },
             { code: 'jp', name: '일본', hint: '아시아' },
@@ -380,12 +641,103 @@
             { code: 'bd', name: '방글라데시', hint: '아시아' },
         ];
 
+        // ===== 효과음 =====
+        let soundEnabled = true;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundToggle').textContent = soundEnabled ? '🔊' : '🔇';
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                // 정답: 밝은 올라가는 소리
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523, audioCtx.currentTime);      // 도
+                osc.frequency.setValueAtTime(659, audioCtx.currentTime + 0.1); // 미
+                osc.frequency.setValueAtTime(784, audioCtx.currentTime + 0.2); // 솔
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start(audioCtx.currentTime);
+                osc.stop(audioCtx.currentTime + 0.4);
+            } else if (type === 'wrong') {
+                // 오답: 낮은 삐 소리
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(audioCtx.currentTime);
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'click') {
+                // 클릭: 짧은 톡 소리
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                osc.start(audioCtx.currentTime);
+                osc.stop(audioCtx.currentTime + 0.08);
+            } else if (type === 'flip') {
+                // 카드 뒤집기
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(900, audioCtx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+                osc.start(audioCtx.currentTime);
+                osc.stop(audioCtx.currentTime + 0.12);
+            } else if (type === 'match') {
+                // 카드 매칭 성공
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(784, audioCtx.currentTime + 0.12);
+                osc.frequency.setValueAtTime(1047, audioCtx.currentTime + 0.24);
+                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                osc.start(audioCtx.currentTime);
+                osc.stop(audioCtx.currentTime + 0.5);
+            } else if (type === 'complete') {
+                // 게임 완료: 팡파레
+                [0, 0.15, 0.3, 0.45, 0.6].forEach((t, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g);
+                    g.connect(audioCtx.destination);
+                    o.type = 'sine';
+                    o.frequency.setValueAtTime([523, 659, 784, 1047, 1318][i], audioCtx.currentTime + t);
+                    g.gain.setValueAtTime(0.25, audioCtx.currentTime + t);
+                    g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + t + 0.2);
+                    o.start(audioCtx.currentTime + t);
+                    o.stop(audioCtx.currentTime + t + 0.2);
+                });
+            }
+        }
+
+        // ===== 공통 변수 =====
         const TOTAL_QUESTIONS = 10;
+        let currentMode = 1;
         let currentQuestion = 0;
         let correctCount = 0;
         let wrongCount = 0;
         let selectedCountries = [];
         let answered = false;
+
+        // O/X 모드용
+        let oxCorrectAnswer = false;
+
+        // 카드 모드용
+        let cardFlipped = [];
+        let cardMatched = 0;
+        let cardAttempts = 0;
+        let cardLocked = false;
+        const CARD_PAIRS = 6;
 
         function shuffle(array) {
             const arr = [...array];
@@ -396,32 +748,78 @@
             return arr;
         }
 
-        function startGame() {
+        function flagUrl(code) {
+            return `https://flagcdn.com/w640/${code}.png`;
+        }
+
+        // ===== 홈으로 =====
+        function goHome() {
+            document.getElementById('startScreen').style.display = 'block';
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('cardScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'none';
+        }
+
+        // ===== 게임 시작 =====
+        function startGame(mode) {
+            playSound('click');
+            currentMode = mode;
             currentQuestion = 0;
             correctCount = 0;
             wrongCount = 0;
+            answered = false;
             selectedCountries = shuffle(countries).slice(0, TOTAL_QUESTIONS);
 
             document.getElementById('startScreen').style.display = 'none';
             document.getElementById('resultScreen').style.display = 'none';
+
+            if (mode === 4) {
+                startCardGame();
+                return;
+            }
+
             document.getElementById('gameScreen').style.display = 'block';
+            document.getElementById('cardScreen').style.display = 'none';
+
+            // 모드별 영역 표시
+            document.getElementById('mode1Area').style.display = mode === 1 ? 'block' : 'none';
+            document.getElementById('mode2Area').style.display = mode === 2 ? 'block' : 'none';
+            document.getElementById('mode3Area').style.display = mode === 3 ? 'block' : 'none';
+
+            const titles = {
+                1: '건이~ 이 국기는 어느 나라일까?',
+                2: '건이~ 이 나라의 국기를 찾아봐!',
+                3: '건이~ 맞으면 O 틀리면 X!'
+            };
+            document.getElementById('gameTitle').textContent = titles[mode];
 
             showQuestion();
         }
 
+        // ===== 문제 보여주기 =====
         function showQuestion() {
             answered = false;
             const country = selectedCountries[currentQuestion];
 
-            // 국기 이미지 로드
-            const flagImg = document.getElementById('flagImage');
-            flagImg.src = `https://flagcdn.com/w640/${country.code}.png`;
-            flagImg.alt = '국기';
+            // 점수판 업데이트
+            document.getElementById('correctScore').textContent = `⭕ ${correctCount}`;
+            document.getElementById('wrongScore').textContent = `❌ ${wrongCount}`;
+            document.getElementById('questionCount').textContent = `${currentQuestion + 1} / ${TOTAL_QUESTIONS}`;
+            document.getElementById('progressFill').style.width = `${(currentQuestion / TOTAL_QUESTIONS) * 100}%`;
+            document.getElementById('message').textContent = '';
+            document.getElementById('message').className = 'message';
+            document.getElementById('nextBtn').style.display = 'none';
 
-            // 힌트
+            if (currentMode === 1) showMode1(country);
+            else if (currentMode === 2) showMode2(country);
+            else if (currentMode === 3) showMode3(country);
+        }
+
+        // ===== 모드1: 국기 보고 나라 이름 맞추기 =====
+        function showMode1(country) {
+            document.getElementById('flagImage').src = flagUrl(country.code);
             document.getElementById('hintText').textContent = `힌트: ${country.hint}`;
 
-            // 보기 만들기 (정답 + 오답 3개)
             let wrongOptions = countries.filter(c => c.code !== country.code);
             wrongOptions = shuffle(wrongOptions).slice(0, 3);
             let options = shuffle([country, ...wrongOptions]);
@@ -433,26 +831,162 @@
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.textContent = opt.name;
-                btn.onclick = () => checkAnswer(btn, opt.code === country.code, country.name);
+                btn.onclick = () => {
+                    playSound('click');
+                    checkAnswer(btn, opt.code === country.code, country.name, 'option-btn');
+                };
                 optionsDiv.appendChild(btn);
             });
-
-            // UI 업데이트
-            document.getElementById('correctScore').textContent = `⭕ ${correctCount}`;
-            document.getElementById('wrongScore').textContent = `❌ ${wrongCount}`;
-            document.getElementById('questionCount').textContent = `${currentQuestion + 1} / ${TOTAL_QUESTIONS}`;
-            document.getElementById('progressFill').style.width = `${((currentQuestion) / TOTAL_QUESTIONS) * 100}%`;
-            document.getElementById('message').textContent = '';
-            document.getElementById('message').className = 'message';
-            document.getElementById('nextBtn').style.display = 'none';
         }
 
-        function checkAnswer(btn, isCorrect, correctName) {
+        // ===== 모드2: 나라 이름 보고 국기 맞추기 =====
+        function showMode2(country) {
+            document.getElementById('countryNameText').textContent = `"${country.name}" 의 국기는?`;
+            document.getElementById('hintText2').textContent = `힌트: ${country.hint}`;
+
+            let wrongOptions = countries.filter(c => c.code !== country.code);
+            wrongOptions = shuffle(wrongOptions).slice(0, 3);
+            let options = shuffle([country, ...wrongOptions]);
+
+            const flagOptionsDiv = document.getElementById('flagOptions');
+            flagOptionsDiv.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'flag-option-btn';
+                btn.innerHTML = `<img src="${flagUrl(opt.code)}" alt="국기">`;
+                btn.dataset.code = opt.code;
+                btn.onclick = () => {
+                    playSound('click');
+                    checkFlagAnswer(btn, opt.code === country.code, country.code);
+                };
+                flagOptionsDiv.appendChild(btn);
+            });
+        }
+
+        function checkFlagAnswer(btn, isCorrect, correctCode) {
             if (answered) return;
             answered = true;
 
-            // 모든 버튼 비활성화
-            const buttons = document.querySelectorAll('.option-btn');
+            const buttons = document.querySelectorAll('.flag-option-btn');
+            buttons.forEach(b => {
+                b.disabled = true;
+                if (b.dataset.code === correctCode) {
+                    b.classList.add('correct');
+                }
+            });
+
+            const messageEl = document.getElementById('message');
+            const correctCountry = countries.find(c => c.code === correctCode);
+
+            if (isCorrect) {
+                correctCount++;
+                playSound('correct');
+                const msgs = [
+                    '건이 천재다! 🎉 정답!',
+                    '우와~ 건강이 대단해! 🎉',
+                    '건이 역시 국기 박사! 🎉',
+                    '멋져 건이! 정답이야! 🎉',
+                    '건강이 최고! 👏 맞았어!',
+                ];
+                messageEl.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+                messageEl.className = 'message correct-msg';
+            } else {
+                wrongCount++;
+                playSound('wrong');
+                btn.classList.add('wrong');
+                const msgs = [
+                    `건이 아쉽다~ 정답은 "${correctCountry.name}" 국기야!`,
+                    `괜찮아 건이! 정답은 "${correctCountry.name}" 이었어~`,
+                    `건강이 다음엔 맞출 수 있어!`,
+                ];
+                messageEl.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+                messageEl.className = 'message wrong-msg';
+            }
+
+            document.getElementById('correctScore').textContent = `⭕ ${correctCount}`;
+            document.getElementById('wrongScore').textContent = `❌ ${wrongCount}`;
+            showNextBtn();
+        }
+
+        // ===== 모드3: O/X 퀴즈 =====
+        function showMode3(country) {
+            document.getElementById('oxFlagImage').src = flagUrl(country.code);
+
+            // 50% 확률로 맞는/틀린 이름 표시
+            oxCorrectAnswer = Math.random() < 0.5;
+            let displayName;
+
+            if (oxCorrectAnswer) {
+                displayName = country.name;
+            } else {
+                let wrongCountry;
+                do {
+                    wrongCountry = countries[Math.floor(Math.random() * countries.length)];
+                } while (wrongCountry.code === country.code);
+                displayName = wrongCountry.name;
+            }
+
+            document.getElementById('oxQuestionText').textContent = `이 국기는 "${displayName}" 의 국기일까?`;
+            document.getElementById('oBtn').disabled = false;
+            document.getElementById('xBtn').disabled = false;
+            document.getElementById('oBtn').className = 'ox-btn o-btn';
+            document.getElementById('xBtn').className = 'ox-btn x-btn';
+        }
+
+        function checkOX(userAnswer) {
+            if (answered) return;
+            answered = true;
+            playSound('click');
+
+            const isCorrect = (userAnswer === oxCorrectAnswer);
+            const oBtn = document.getElementById('oBtn');
+            const xBtn = document.getElementById('xBtn');
+            oBtn.disabled = true;
+            xBtn.disabled = true;
+
+            const messageEl = document.getElementById('message');
+            const country = selectedCountries[currentQuestion];
+
+            if (isCorrect) {
+                correctCount++;
+                playSound('correct');
+                if (userAnswer) oBtn.classList.add('correct');
+                else xBtn.classList.add('correct');
+                const msgs = [
+                    '건이 천재다! 🎉 정답!',
+                    '우와~ 건강이 대단해! 🎉',
+                    '건이 역시 국기 박사! 🎉',
+                    '멋져 건이! 정답이야! 🎉',
+                    '건강이 최고! 👏 맞았어!',
+                ];
+                messageEl.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+                messageEl.className = 'message correct-msg';
+            } else {
+                wrongCount++;
+                playSound('wrong');
+                if (userAnswer) oBtn.classList.add('wrong');
+                else xBtn.classList.add('wrong');
+                const answer = oxCorrectAnswer ? '⭕ 맞아요!' : '❌ 아니에요!';
+                const msgs = [
+                    `건이 아쉽다~ ${answer} 이건 "${country.name}" 국기야!`,
+                    `괜찮아 건이! 이건 "${country.name}" 국기였어~`,
+                ];
+                messageEl.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+                messageEl.className = 'message wrong-msg';
+            }
+
+            document.getElementById('correctScore').textContent = `⭕ ${correctCount}`;
+            document.getElementById('wrongScore').textContent = `❌ ${wrongCount}`;
+            showNextBtn();
+        }
+
+        // ===== 모드1 정답 확인 =====
+        function checkAnswer(btn, isCorrect, correctName, btnClass) {
+            if (answered) return;
+            answered = true;
+
+            const buttons = document.querySelectorAll('.' + btnClass);
             buttons.forEach(b => {
                 b.disabled = true;
                 if (b.textContent === correctName) {
@@ -464,31 +998,35 @@
 
             if (isCorrect) {
                 correctCount++;
-                const correctMessages = [
+                playSound('correct');
+                const msgs = [
                     '건이 천재다! 🎉 정답!',
                     '우와~ 건강이 대단해! 🎉',
                     '건이 역시 국기 박사! 🎉',
                     '멋져 건이! 정답이야! 🎉',
                     '건강이 최고! 👏 맞았어!',
                 ];
-                messageEl.textContent = correctMessages[Math.floor(Math.random() * correctMessages.length)];
+                messageEl.textContent = msgs[Math.floor(Math.random() * msgs.length)];
                 messageEl.className = 'message correct-msg';
             } else {
                 wrongCount++;
+                playSound('wrong');
                 btn.classList.add('wrong');
-                const wrongMessages = [
+                const msgs = [
                     `건이 아쉽다~ 정답은 "${correctName}" 이야!`,
                     `괜찮아 건이! 정답은 "${correctName}" 이었어~`,
                     `건강이 다음엔 맞출 수 있어! 정답은 "${correctName}"!`,
                 ];
-                messageEl.textContent = wrongMessages[Math.floor(Math.random() * wrongMessages.length)];
+                messageEl.textContent = msgs[Math.floor(Math.random() * msgs.length)];
                 messageEl.className = 'message wrong-msg';
             }
 
             document.getElementById('correctScore').textContent = `⭕ ${correctCount}`;
             document.getElementById('wrongScore').textContent = `❌ ${wrongCount}`;
+            showNextBtn();
+        }
 
-            // 다음 버튼 또는 결과 표시
+        function showNextBtn() {
             const nextBtn = document.getElementById('nextBtn');
             if (currentQuestion < TOTAL_QUESTIONS - 1) {
                 nextBtn.textContent = '다음 문제 ➜';
@@ -499,6 +1037,7 @@
         }
 
         function nextQuestion() {
+            playSound('click');
             currentQuestion++;
             if (currentQuestion >= TOTAL_QUESTIONS) {
                 showResult();
@@ -507,7 +1046,149 @@
             }
         }
 
+        // ===== 모드4: 카드 짝 맞추기 =====
+        function startCardGame() {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('cardScreen').style.display = 'block';
+
+            cardFlipped = [];
+            cardMatched = 0;
+            cardAttempts = 0;
+            cardLocked = false;
+
+            const selected = shuffle(countries).slice(0, CARD_PAIRS);
+            let cards = [];
+
+            selected.forEach(c => {
+                // 국기 카드
+                cards.push({ type: 'flag', code: c.code, name: c.name, pairId: c.code });
+                // 이름 카드
+                cards.push({ type: 'name', code: c.code, name: c.name, pairId: c.code });
+            });
+
+            cards = shuffle(cards);
+
+            const grid = document.getElementById('cardGrid');
+            grid.innerHTML = '';
+
+            cards.forEach((card, i) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'card';
+                cardEl.dataset.index = i;
+                cardEl.dataset.pairId = card.pairId;
+
+                let backContent;
+                if (card.type === 'flag') {
+                    backContent = `<img src="${flagUrl(card.code)}" alt="국기">`;
+                } else {
+                    backContent = `<div class="card-text">${card.name}</div>`;
+                }
+
+                cardEl.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-front">❓</div>
+                        <div class="card-back">${backContent}</div>
+                    </div>
+                `;
+
+                cardEl.onclick = () => flipCard(cardEl);
+                grid.appendChild(cardEl);
+            });
+
+            updateCardStats();
+            document.getElementById('cardMessage').textContent = '건이~ 같은 나라의 국기와 이름을 찾아봐!';
+        }
+
+        function flipCard(cardEl) {
+            if (cardLocked) return;
+            if (cardEl.classList.contains('flipped') || cardEl.classList.contains('matched')) return;
+
+            playSound('flip');
+            cardEl.classList.add('flipped');
+            cardFlipped.push(cardEl);
+
+            if (cardFlipped.length === 2) {
+                cardLocked = true;
+                cardAttempts++;
+                updateCardStats();
+
+                const [c1, c2] = cardFlipped;
+
+                if (c1.dataset.pairId === c2.dataset.pairId) {
+                    // 짝 맞음
+                    setTimeout(() => {
+                        c1.classList.add('matched');
+                        c2.classList.add('matched');
+                        cardMatched++;
+                        playSound('match');
+                        updateCardStats();
+
+                        const country = countries.find(c => c.code === c1.dataset.pairId);
+                        const msgs = [
+                            `건이 대단해! "${country.name}" 짝을 찾았어! 🎉`,
+                            `건강이 멋져! "${country.name}" 발견! 👏`,
+                            `우와~ "${country.name}" 짝 맞췄다! ⭐`,
+                        ];
+                        document.getElementById('cardMessage').textContent = msgs[Math.floor(Math.random() * msgs.length)];
+
+                        cardFlipped = [];
+                        cardLocked = false;
+
+                        if (cardMatched === CARD_PAIRS) {
+                            setTimeout(() => {
+                                correctCount = CARD_PAIRS;
+                                wrongCount = cardAttempts - CARD_PAIRS;
+                                showCardResult();
+                            }, 800);
+                        }
+                    }, 500);
+                } else {
+                    // 짝 안 맞음
+                    setTimeout(() => {
+                        playSound('wrong');
+                        c1.classList.remove('flipped');
+                        c2.classList.remove('flipped');
+                        document.getElementById('cardMessage').textContent = '건이 다시 찾아보자! 💪';
+                        cardFlipped = [];
+                        cardLocked = false;
+                    }, 1000);
+                }
+            }
+        }
+
+        function updateCardStats() {
+            document.getElementById('cardStats').textContent = `시도: ${cardAttempts}번 | 짝 찾기: ${cardMatched} / ${CARD_PAIRS}`;
+        }
+
+        function showCardResult() {
+            playSound('complete');
+            document.getElementById('cardScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+
+            let emoji, text;
+
+            if (cardAttempts <= CARD_PAIRS + 2) {
+                emoji = '🏆👑🎉';
+                text = '건이 기억력 천재! 완벽해!';
+            } else if (cardAttempts <= CARD_PAIRS + 5) {
+                emoji = '🌟🎉';
+                text = '건강이 대단해! 기억력 짱!';
+            } else if (cardAttempts <= CARD_PAIRS + 10) {
+                emoji = '😊👍';
+                text = '건이 잘했어! 멋진 기억력!';
+            } else {
+                emoji = '💪😀';
+                text = '건강이 수고했어! 다시 해보자!';
+            }
+
+            document.getElementById('resultEmoji').textContent = emoji;
+            document.getElementById('resultText').textContent = text;
+            document.getElementById('resultDetail').textContent = `${CARD_PAIRS}짝을 ${cardAttempts}번 만에 다 찾았어!`;
+        }
+
+        // ===== 결과 화면 =====
         function showResult() {
+            playSound('complete');
             document.getElementById('gameScreen').style.display = 'none';
             document.getElementById('resultScreen').style.display = 'block';
 
